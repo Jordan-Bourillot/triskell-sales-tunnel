@@ -9,7 +9,7 @@
   #define MyAppVersion "1.1.0"
 #endif
 #define MyAppPublisher "Triskell Studio"
-#define MyAppURL "https://sales-tunnel.triskell-studio.fr"
+#define MyAppURL "https://prospect.triskell-studio.fr"
 #define MyAppExeName "Triskell Sales Tunnel.exe"
 
 [Setup]
