@@ -1,0 +1,10 @@
+{
+  "name": "triskell-sales-tunnel-landing",
+  "version": "1.0.0",
+  "description": "Landing minimaliste Triskell Sales Tunnel",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "deploy": "netlify deploy --prod"
+  }
+}

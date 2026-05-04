@@ -1,0 +1,31 @@
+# Build artefacts
+build/
+dist/
+installer_output/
+*.spec.bak
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+
+# Editeur / IDE
+.vscode/
+.idea/
+.claude/
+*.swp
+.DS_Store
+
+# Données utilisateur (locales)
+user_state.json
+
+# Landing
+landing/node_modules/
+landing/.netlify/
+landing/public/_dl/
+
+# Misc
+*.log
