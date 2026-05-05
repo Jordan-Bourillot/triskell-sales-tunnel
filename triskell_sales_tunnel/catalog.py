@@ -792,6 +792,184 @@ _T_BUNDLE_EQUIPES: Tuple[ChannelTemplate, ...] = (
     ),
 )
 
+# ---------------------------------------------------------------------------
+# DéliNote (notes B2C — 79 €)
+# ---------------------------------------------------------------------------
+
+_T_DELINOTE_CADRES: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="email",
+        subject="Vos notes méritent mieux qu'Evernote",
+        body=(
+            "Bonjour {prenom},\n\n"
+            "Si vos notes pro sont éparpillées entre Evernote, OneNote, des post-its et 3 docs Google, "
+            "**DéliNote** centralise tout : markdown natif, recherche instantanée, sync chiffrée, "
+            "pas de cloud Triskell, pas d'abonnement.\n\n"
+            "79 € paiement unique, mises à jour à vie. Garantie 14 jours.\n\n"
+            "{mon_prenom} — Triskell Studio\n{lien_site}"
+        ),
+    ),
+    ChannelTemplate(
+        channel="linkedin",
+        subject="",
+        body=(
+            "Bonjour {prenom}, vu votre activité {sujet_expertise} — vous prenez sûrement beaucoup "
+            "de notes. DéliNote remplace Evernote/Notion : 100 % local, markdown natif, "
+            "79 € à vie. Si ça vous parle, je vous envoie le lien."
+        ),
+    ),
+)
+
+_T_DELINOTE_ETUDIANTS: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="instagram_dm",
+        subject="",
+        body=(
+            "Hey {prenom} ! Pour les notes de cours / révisions, DéliNote c'est le combo idéal : "
+            "markdown natif, recherche instantanée, 100 % local. 79 € une fois, mises à jour à vie. "
+            "Promo étudiant dispo. Je t'envoie le lien ?"
+        ),
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# Le Studio PDF (39 €)
+# ---------------------------------------------------------------------------
+
+_T_STUDIO_PDF_BUREAU: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="email",
+        subject="Vos PDF, sans bouger un fichier en ligne",
+        body=(
+            "Bonjour {prenom},\n\n"
+            "Fusion, split, OCR, signature, compression — tout ce qu'on fait à des PDF, "
+            "**Le Studio PDF** le fait en local sur votre machine. Aucun upload, aucun tracker, "
+            "aucun abonnement.\n\n"
+            "39 € paiement unique. Idéal pour la compta, les contrats, les scans sensibles.\n\n"
+            "{mon_prenom} — Triskell Studio"
+        ),
+    ),
+    ChannelTemplate(
+        channel="linkedin",
+        subject="",
+        body=(
+            "Bonjour {prenom}, pour les pros qui manipulent des PDF sensibles (compta, contrats), "
+            "Le Studio PDF est local — rien n'est uploadé. 39 € à vie. Si ça vous intéresse, "
+            "je vous envoie le lien."
+        ),
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# AlphaBeast (prompts IA, 19 €)
+# ---------------------------------------------------------------------------
+
+_T_ALPHABEAST_DEV: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="linkedin",
+        subject="",
+        body=(
+            "Bonjour {prenom}, vu que vous bossez avec Claude / GPT au quotidien — "
+            "AlphaBeast combine ton prompt avec 16 Mega Prompts (Honnêteté brutale, Anti-slop, "
+            "Pre-mortem, Sparring partner…) et l'envoie au provider de ton choix. 19 € à vie."
+        ),
+    ),
+    ChannelTemplate(
+        channel="twitter_dm",
+        subject="",
+        body=(
+            "Hello {prenom} 👋 Si tu bosses avec Claude/GPT au quotidien, AlphaBeast = 16 mega prompts "
+            "brandés (Honnêteté brutale, Anti-slop, Pre-mortem) à combiner. 5 providers IA. 19 € à vie."
+        ),
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# Bobeez (gestionnaire d'images B2C, 27 €)
+# ---------------------------------------------------------------------------
+
+_T_BOBEEZ_PHOTO: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="email",
+        subject="Vos photos, enfin organisées (sans cloud forcé)",
+        body=(
+            "Bonjour {prenom},\n\n"
+            "Si vos photos s'empilent sans logique, **Bobeez** range tout : calendrier, carte GPS, "
+            "tri rapide, doublons, le tout en local. Pas de Google Photos qui upload, pas d'abonnement.\n\n"
+            "27 € paiement unique, mises à jour à vie.\n\n"
+            "{mon_prenom} — Triskell Studio"
+        ),
+    ),
+    ChannelTemplate(
+        channel="instagram_dm",
+        subject="",
+        body=(
+            "Hello {prenom} 📸 Bobeez = gestionnaire de photos local, calendrier + carte GPS + tri rapide, "
+            "27 € à vie. Pas de cloud forcé. Tu veux le lien ?"
+        ),
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# Triskell Outils Pro (calculateurs chantier, 9 €/mois)
+# ---------------------------------------------------------------------------
+
+_T_OUTILS_BAT: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="email",
+        subject="Calculateurs chantier qui te font gagner 30 min/jour",
+        body=(
+            "Bonjour {prenom},\n\n"
+            "Calcul carrelage, placo, peinture, béton — encore au tableur Excel ou au papier ?\n\n"
+            "**Triskell Outils Pro** = calculateurs métier dédiés artisans bâtiment, "
+            "9 €/mois (sans engagement). Tu poses les côtes, l'outil sort le métré + bon de commande.\n\n"
+            "{mon_prenom} — Triskell Studio"
+        ),
+    ),
+    ChannelTemplate(
+        channel="whatsapp",
+        subject="",
+        body=(
+            "Bonjour {prenom}, {mon_prenom} de Triskell. Pour le calcul carrelage / placo / peinture / béton, "
+            "on a Triskell Outils Pro à 9 €/mois sans engagement. Métré + bon de commande directement. "
+            "Je t'envoie le lien ?"
+        ),
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# Pack Électricien Pro (33 modèles devis/factures, 27 €)
+# ---------------------------------------------------------------------------
+
+_T_PACK_ELEC: Tuple[ChannelTemplate, ...] = (
+    ChannelTemplate(
+        channel="email",
+        subject="33 modèles devis/factures électricien + outil chantier offert",
+        body=(
+            "Bonjour {prenom},\n\n"
+            "Marre de bricoler tes devis sur Word ?\n\n"
+            "**Pack Électricien Pro** : 33 modèles devis/factures spécifiques métier électricien "
+            "(branchement, mise aux normes, dépannage, rénovation totale) + outil chantier offert. "
+            "27 € paiement unique, à vie.\n\n"
+            "{mon_prenom} — Triskell Studio"
+        ),
+    ),
+    ChannelTemplate(
+        channel="whatsapp",
+        subject="",
+        body=(
+            "Bonjour {prenom}, {mon_prenom} de Triskell. Pour les électriciens : pack 33 modèles "
+            "devis/factures + outil chantier offert. 27 € à vie. Je t'envoie le lien ?"
+        ),
+    ),
+)
+
+
 _T_BUNDLE_COACHS: Tuple[ChannelTemplate, ...] = (
     ChannelTemplate(
         channel="instagram_dm",
@@ -1231,8 +1409,8 @@ PRODUCTS: Tuple[Product, ...] = (
         ),
     ),
     Product(
-        key="saas_denicheur",
-        label="SaaS Dénicheur de Créateurs",
+        key="le_denicheur",
+        label="Le Dénicheur — créateurs sur 9 plateformes",
         tagline="Identifie les créateurs UGC avec engagement réel, encore non monétisés.",
         audience="B2B",
         contexts=(CTX_HAS_UGC, CTX_STARTING_UGC),
@@ -1269,8 +1447,8 @@ PRODUCTS: Tuple[Product, ...] = (
         ),
     ),
     Product(
-        key="saas_publication",
-        label="SaaS Publication Automatisée",
+        key="alphacast",
+        label="AlphaCast — publication multi-réseaux  ·  bientôt",
         tagline="Publication intelligente multi-réseaux, avec adaptation par plateforme.",
         audience="B2B",
         contexts=(CTX_MANUAL_PUB, CTX_OTHER_TOOL),
@@ -1314,9 +1492,9 @@ PRODUCTS: Tuple[Product, ...] = (
         ),
     ),
     Product(
-        key="triskell_suite",
-        label="Triskell Suite — 5 apps tout-en-un (B2C)",
-        tagline="5 applications premium en une licence : notes, photo, PDF, optimisation PC, mail.",
+        key="suite_des_heros",
+        label="La Suite des Héros — 11 outils desktop",
+        tagline="11 micro-outils desktop pour ranger, renommer, compresser, sécuriser tes fichiers. 27 €.",
         audience="B2C",
         contexts=(CTX_MANY_SUBS, CTX_FREE_TOOLS),
         context_templates=_CTX_TEMPLATES_SUITE,
@@ -1400,6 +1578,109 @@ PRODUCTS: Tuple[Product, ...] = (
                 priority=2,
                 description="Site + outils perso + publi auto.",
                 templates=_T_BUNDLE_COACHS,
+            ),
+        ),
+    ),
+    # ----- DéliNote (B2C, 79 €) -----
+    Product(
+        key="delinote",
+        label="DéliNote — notes premium 100 % locales",
+        tagline="Notes synchronisées, markdown natif, recherche instantanée. 79 € à vie.",
+        audience="B2C",
+        clients=(
+            ClientTarget(
+                key="cadres_remote",
+                label="Cadres & pros en télétravail",
+                priority=1,
+                description="Volume de notes pro élevé, marre des abonnements Notion/Evernote.",
+                templates=_T_DELINOTE_CADRES,
+            ),
+            ClientTarget(
+                key="etudiants",
+                label="Étudiants",
+                priority=2,
+                description="Notes de cours, recherche rapide, pas envie de payer un cloud.",
+                templates=_T_DELINOTE_ETUDIANTS,
+            ),
+        ),
+    ),
+    # ----- Le Studio PDF (B2C, 39 €) -----
+    Product(
+        key="studio_pdf",
+        label="Le Studio PDF — fusion / split / OCR / signature",
+        tagline="Tout pour tes PDF, en local. 39 € à vie.",
+        audience="B2C",
+        clients=(
+            ClientTarget(
+                key="bureau",
+                label="Pros bureau / compta / juridique",
+                priority=1,
+                description="Manipulation quotidienne de PDF sensibles, refus d'upload cloud.",
+                templates=_T_STUDIO_PDF_BUREAU,
+            ),
+        ),
+    ),
+    # ----- AlphaBeast (Pro, 19 €) -----
+    Product(
+        key="alphabeast",
+        label="AlphaBeast — Mega Prompts brandés (5 IA)",
+        tagline="16 Mega Prompts à combiner. Claude / GPT / Gemini / Mistral / Grok. 19 € à vie.",
+        audience="B2B",
+        clients=(
+            ClientTarget(
+                key="dev_consultants",
+                label="Devs / consultants / power users IA",
+                priority=1,
+                description="Bossent quotidiennement avec Claude/GPT, veulent prompts calibrés.",
+                templates=_T_ALPHABEAST_DEV,
+            ),
+        ),
+    ),
+    # ----- Bobeez (B2C, 27 €) -----
+    Product(
+        key="bobeez",
+        label="Bobeez — gestionnaire d'images moderne",
+        tagline="Calendrier, carte GPS, tri rapide, doublons. 27 € à vie.",
+        audience="B2C",
+        clients=(
+            ClientTarget(
+                key="photographes",
+                label="Photographes amateurs / familles",
+                priority=1,
+                description="Pile de photos sans logique, refus du cloud forcé.",
+                templates=_T_BOBEEZ_PHOTO,
+            ),
+        ),
+    ),
+    # ----- Triskell Outils Pro (artisans bâtiment, 9 €/mois) -----
+    Product(
+        key="outils_batiment",
+        label="Triskell Outils Pro — calculateurs chantier",
+        tagline="Carrelage, placo, peinture, béton. 9 €/mois sans engagement.",
+        audience="B2B",
+        clients=(
+            ClientTarget(
+                key="artisans_bat",
+                label="Artisans bâtiment (carreleurs, plâtriers, peintres, maçons)",
+                priority=1,
+                description="Calcul métré + bon de commande, encore au papier ou Excel.",
+                templates=_T_OUTILS_BAT,
+            ),
+        ),
+    ),
+    # ----- Pack Électricien Pro (27 €) -----
+    Product(
+        key="pack_electricien_pro",
+        label="Pack Électricien Pro — 33 modèles devis/factures",
+        tagline="33 modèles métier + outil chantier offert. 27 € à vie.",
+        audience="B2B",
+        clients=(
+            ClientTarget(
+                key="electriciens",
+                label="Électriciens indépendants & petites entreprises",
+                priority=1,
+                description="Devis et factures spécifiques métier, marre de bricoler sur Word.",
+                templates=_T_PACK_ELEC,
             ),
         ),
     ),
