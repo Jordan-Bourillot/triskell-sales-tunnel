@@ -93,6 +93,45 @@ class TriskellApp(ctk.CTk):
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         self._set_app_icon()
 
+    def _build_header_logo(self) -> ctk.CTkBaseClass:
+        """Construit le logo header. PNG officiel si dispo, sinon TriskellLogo Canvas."""
+        import sys
+        from pathlib import Path
+        from PIL import Image
+
+        if hasattr(sys, "_MEIPASS"):
+            base = Path(getattr(sys, "_MEIPASS")) / "triskell_sales_tunnel" / "assets"
+        else:
+            base = Path(__file__).resolve().parent / "assets"
+
+        png = base / "triskell_icon.png"
+        if png.exists():
+            try:
+                img = Image.open(png).convert("RGBA")
+                ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(60, 60))
+                label = ctk.CTkLabel(self._header, text="", image=ctk_img, fg_color="transparent")
+                # Garder la ref pour eviter le GC
+                self._header_logo_image = ctk_img
+                label.grid(row=0, column=0, padx=(theme.SPACE_2XL, theme.SPACE_LG), pady=theme.SPACE_LG)
+                return label
+            except Exception as exc:  # noqa: BLE001
+                LOG.warning("Logo PNG illisible (%s), fallback Canvas", exc)
+
+        # Fallback Canvas Bezier
+        canvas_logo = TriskellLogo(
+            self._header,
+            size=60,
+            bg=self.colors.header_bg,
+            leaf_indigo=self.colors.accent,
+            leaf_violet=self.colors.accent_secondary,
+            leaf_orange=self.colors.accent_tertiary,
+            center=self.colors.bg,
+            glow=self.colors.accent_glow,
+            gold=self.colors.gold,
+        )
+        canvas_logo.grid(row=0, column=0, padx=(theme.SPACE_2XL, theme.SPACE_LG), pady=theme.SPACE_LG)
+        return canvas_logo
+
     def _set_app_icon(self) -> None:
         """Définit l'icône fenêtre + taskbar Windows depuis le .ico embarqué."""
         import sys
@@ -138,58 +177,48 @@ class TriskellApp(ctk.CTk):
         self._header.grid_propagate(False)
         self._header.grid_columnconfigure(1, weight=1)
 
-        # Logo (canvas) — 3 feuilles + halo gold signature Table Ronde
-        self._logo = TriskellLogo(
-            self._header,
-            size=60,
-            bg=self.colors.header_bg,
-            leaf_indigo=self.colors.accent,
-            leaf_violet=self.colors.accent_secondary,
-            leaf_orange=self.colors.accent_tertiary,
-            center=self.colors.bg,
-            glow=self.colors.accent_glow,
-            gold=self.colors.gold,
-        )
-        self._logo.grid(row=0, column=0, padx=(theme.SPACE_2XL, theme.SPACE_LG), pady=theme.SPACE_LG)
+        # Logo : on utilise le PNG officiel Triskell (cohérent avec .ico Windows + Table Ronde)
+        # Fallback Canvas Bezier si le PNG est introuvable (dev local sans assets).
+        # _build_header_logo() s'occupe du .grid() interne.
+        self._logo = self._build_header_logo()
 
         # Brand block (style Table Ronde : nom en display, sous-label en gold uppercase)
         brand_frame = ctk.CTkFrame(self._header, fg_color="transparent")
         brand_frame.grid(row=0, column=1, sticky="w", pady=theme.SPACE_MD)
 
+        # Ligne 1 : "Triskell Sales Tunnel" en grand + version pill
         line1 = ctk.CTkFrame(brand_frame, fg_color="transparent")
         line1.pack(anchor="w")
         ctk.CTkLabel(
             line1,
-            text="triskell",
+            text="Triskell",
             font=(theme.FONT_FAMILY_DISPLAY, theme.FONT_SIZE_DISPLAY, "bold"),
             text_color=self.colors.text_primary,
         ).pack(side="left")
         ctk.CTkLabel(
             line1,
-            text="  STUDIO",
-            font=(theme.FONT_FAMILY, theme.FONT_SIZE_SMALL, "bold"),
-            text_color=self.colors.gold,
-        ).pack(side="left", padx=(6, 0), pady=(8, 0))
-
+            text=" Sales Tunnel",
+            font=(theme.FONT_FAMILY_DISPLAY, theme.FONT_SIZE_DISPLAY, "bold"),
+            text_color=self.colors.accent,
+        ).pack(side="left")
         # Version badge
-        version_pill = ctk.CTkLabel(
+        ctk.CTkLabel(
             line1,
             text=theme.APP_VERSION_LABEL,
             font=(theme.FONT_FAMILY_MONO, theme.FONT_SIZE_TINY),
             text_color=self.colors.text_muted,
             fg_color="transparent",
             corner_radius=theme.RADIUS_PILL,
-        )
-        version_pill.pack(side="left", padx=(theme.SPACE_SM, 0), pady=(8, 0))
+        ).pack(side="left", padx=(theme.SPACE_SM, 0), pady=(10, 0))
 
-        # Sous-titre + badge breton
+        # Ligne 2 : badge breton "STUDIO" en gold + tagline
         sub_row = ctk.CTkFrame(brand_frame, fg_color="transparent")
         sub_row.pack(anchor="w", pady=(2, 0))
         ctk.CTkLabel(
             sub_row,
-            text=theme.BRAND_PRODUCT,
-            font=(theme.FONT_FAMILY, theme.FONT_SIZE_SMALL, "italic"),
-            text_color=self.colors.accent,
+            text="TRISKELL  STUDIO",
+            font=(theme.FONT_FAMILY, theme.FONT_SIZE_SMALL, "bold"),
+            text_color=self.colors.gold,
         ).pack(side="left")
         ctk.CTkLabel(
             sub_row,

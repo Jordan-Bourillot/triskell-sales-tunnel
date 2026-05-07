@@ -22,15 +22,23 @@ import customtkinter as ctk
 LOG = logging.getLogger("triskell.product_icons")
 
 # Mapping product_key -> (icon_filename | None, emoji fallback)
-# Tous les produits ont désormais un PNG dédié (générés via tools/make_product_icons.py
-# pour ceux qui n'avaient pas d'icône officielle). L'emoji reste en fallback ultime.
+# Tous les PNG sont les officiels Triskell Studio (copiés depuis Triskell 0 - Lanceur).
 ICON_MAP: dict[str, Tuple[Optional[str], str]] = {
-    "triskell_studio":   ("triskell_studio.png",   "🌐"),
-    "eliks_studio":      ("eliks_studio.png",      "🚀"),
-    "saas_denicheur":    ("saas_denicheur.png",    "🔭"),
-    "saas_publication":  ("saas_publication.png",  "📡"),
-    "triskell_suite":    ("triskell_suite.png",    "🛠"),
-    "bundles_mixtes":    ("bundles_mixtes.png",    "📦"),
+    # Pros
+    "triskell_studio":      ("triskell_studio.png",      "🌐"),
+    "eliks_studio":         ("eliks_studio.png",         "🚀"),
+    "le_denicheur":         ("le_denicheur.png",         "🔭"),
+    "alphacast":            ("alphacast.png",            "📡"),
+    "alphabeast":           ("alphabeast.png",           "🤖"),
+    "outils_batiment":      ("outils_batiment.png",      "🔧"),
+    "pack_electricien_pro": ("pack_electricien_pro.png", "⚡"),
+    # Particuliers
+    "suite_des_heros":      ("suite_des_heros.png",      "🛠"),
+    "delinote":             ("delinote.png",             "📝"),
+    "studio_pdf":           ("studio_pdf.png",           "📄"),
+    "bobeez":               ("bobeez.png",               "📸"),
+    # Mixte
+    "bundles_mixtes":       ("bundles_mixtes.png",       "📦"),
 }
 
 EMOJI_DEFAULT = "✦"

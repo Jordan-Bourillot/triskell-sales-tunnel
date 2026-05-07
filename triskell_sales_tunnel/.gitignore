@@ -1,0 +1,28 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ===== Build =====
+build/
+dist/
+Output/
+Installation/
+*.exe
+*.zip
+
+# ===== Secrets =====
+.env
+.env.local
+.env.*.local
+
+# ===== IDE / OS =====
+.vscode/
+.idea/
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# ===== Logs =====
+*.log

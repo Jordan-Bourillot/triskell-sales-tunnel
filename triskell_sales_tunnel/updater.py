@@ -1,7 +1,13 @@
-"""Auto-updater Triskell Sales Tunnel.
+"""Auto-updater AlphaPitch (ex-Triskell Sales Tunnel).
 
-Reproduit le pattern Triskell (Studio PDF / AlphaBeast / DéliNote) :
-GitHub Releases → check passif → download silencieux → installation au clic.
+Pattern hybride (depuis v1.2.0) — standard Triskell :
+    1. Pattern A — Manifest landing : lit https://prospect.triskell-studio.fr/version.json
+       (standard Triskell, decouple du repo GitHub).
+    2. Pattern B — GitHub Releases API : fallback si le manifest est inaccessible
+       (compat retro pour les v1.1.x installes avant la migration).
+
+Le canal "beta" passe directement par GitHub Releases (le manifest ne contient
+que la stable).
 
 Phases : idle | checking | available | not-available | downloading | ready | error.
 
@@ -36,7 +42,9 @@ APP_VERSION = "1.1.0"
 GITHUB_OWNER = "Jordan-Bourillot"
 GITHUB_REPO = "triskell-sales-tunnel"
 UPDATE_INSTALLER_PATTERN = "TriskellSalesTunnel_setup_*.exe"
-USER_AGENT = f"TriskellSalesTunnel/{APP_VERSION}"
+USER_AGENT = f"AlphaPitch/{APP_VERSION}"
+# Pattern A — manifest landing (standard Triskell). Si inaccessible, fallback GitHub.
+MANIFEST_URL = "https://prospect.triskell-studio.fr/version.json"
 
 
 # ---------------------------------------------------------------------------
@@ -190,52 +198,110 @@ class _Updater:
                 return None
             raise
 
+    def _try_manifest(self) -> Optional[dict]:
+        """Pattern A — lit le manifest landing. Renvoie None en cas d'echec."""
+        try:
+            req = urllib.request.Request(
+                MANIFEST_URL,
+                headers={"User-Agent": USER_AGENT},
+            )
+            with urllib.request.urlopen(req, timeout=8) as r:
+                data = json.loads(r.read().decode("utf-8"))
+            if not isinstance(data, dict) or "version" not in data:
+                return None
+            return data
+        except Exception as e:  # noqa: BLE001
+            logger.info("manifest unreachable, fallback GitHub : %s", e)
+            return None
+
     def _do_check(self) -> None:
         self._set(phase="checking", message="")
         try:
+            # Canal beta -> directement GitHub (le manifest ne contient que la stable)
             if self._channel == "beta":
-                releases = self._http_json(self._api_url_all())
-                if not releases:
-                    self._set(phase="not-available")
-                    return
-                latest = releases[0]
-            else:
-                latest = self._http_json(self._api_url_latest())
-                if not latest:
-                    self._set(phase="not-available")
-                    return
-
-            tag = latest.get("tag_name", "") if isinstance(latest, dict) else ""
-            if not is_newer(tag, APP_VERSION):
-                self._set(phase="not-available", next_version=tag)
+                self._do_check_github()
                 return
 
-            installer_asset = None
-            for asset in latest.get("assets", []):
-                name = asset.get("name", "")
-                if fnmatch.fnmatch(name, UPDATE_INSTALLER_PATTERN):
-                    installer_asset = asset
-                    break
-
-            if not installer_asset:
-                self._set(
-                    phase="error",
-                    message=f"Aucun installeur trouvé dans la release {tag}.",
-                )
+            # Canal stable -> Pattern A (manifest) en premier
+            manifest = self._try_manifest()
+            if manifest is not None:
+                self._do_check_manifest(manifest)
                 return
 
-            self._set(
-                phase="available",
-                next_version=tag.lstrip("v"),
-                release_notes=latest.get("body", "") or "",
-                download_url=installer_asset.get("browser_download_url", ""),
-                download_size=installer_asset.get("size", 0),
-                is_prerelease=bool(latest.get("prerelease", False)),
-            )
-            self._start_download()
+            # Fallback Pattern B (GitHub Releases) si manifest inaccessible
+            self._do_check_github()
         except Exception as e:  # noqa: BLE001
             logger.exception("check failed")
             self._set(phase="error", message=f"Vérification échouée : {e}")
+
+    def _do_check_manifest(self, manifest: dict) -> None:
+        """Pattern A — process une reponse manifest landing."""
+        version = str(manifest.get("version", "")).strip()
+        if not version:
+            self._set(phase="error", message="Manifest invalide : version manquante.")
+            return
+        if not is_newer(version, APP_VERSION):
+            self._set(phase="not-available", next_version=version)
+            return
+
+        download_url = str(manifest.get("url", "")).strip()
+        if not download_url:
+            self._set(phase="error", message="Manifest invalide : url manquante.")
+            return
+
+        notes = str(manifest.get("notes", "")).strip()
+        self._set(
+            phase="available",
+            next_version=version,
+            release_notes=notes,
+            download_url=download_url,
+            download_size=int(manifest.get("size", 0) or 0),
+            is_prerelease=False,
+        )
+        self._start_download()
+
+    def _do_check_github(self) -> None:
+        """Pattern B — process une reponse GitHub Releases (legacy + canal beta)."""
+        if self._channel == "beta":
+            releases = self._http_json(self._api_url_all())
+            if not releases:
+                self._set(phase="not-available")
+                return
+            latest = releases[0]
+        else:
+            latest = self._http_json(self._api_url_latest())
+            if not latest:
+                self._set(phase="not-available")
+                return
+
+        tag = latest.get("tag_name", "") if isinstance(latest, dict) else ""
+        if not is_newer(tag, APP_VERSION):
+            self._set(phase="not-available", next_version=tag)
+            return
+
+        installer_asset = None
+        for asset in latest.get("assets", []):
+            name = asset.get("name", "")
+            if fnmatch.fnmatch(name, UPDATE_INSTALLER_PATTERN):
+                installer_asset = asset
+                break
+
+        if not installer_asset:
+            self._set(
+                phase="error",
+                message=f"Aucun installeur trouvé dans la release {tag}.",
+            )
+            return
+
+        self._set(
+            phase="available",
+            next_version=tag.lstrip("v"),
+            release_notes=latest.get("body", "") or "",
+            download_url=installer_asset.get("browser_download_url", ""),
+            download_size=installer_asset.get("size", 0),
+            is_prerelease=bool(latest.get("prerelease", False)),
+        )
+        self._start_download()
 
     def _start_download(self) -> None:
         if self._download_thread and self._download_thread.is_alive():
